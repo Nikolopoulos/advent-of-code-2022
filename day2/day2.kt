@@ -18,9 +18,7 @@ enum class Selection {
     }
 }
 
-enum class Outcome {
-    WIN, LOSE, DRAW, UNKNOWN;
-
+class Round {
     companion object {
         fun toPoints(round: Pair<Selection, Selection>): Int {
             var points = getSelectionPoints(round.second)
@@ -28,6 +26,69 @@ enum class Outcome {
             return points
         }
 
+        private fun roundOutcome(round: Pair<Selection, Selection>): Outcome =
+            when (round.second) {
+                Selection.PAPER -> when (round.first) {
+                    Selection.ROCK -> Outcome.WIN
+                    Selection.SCISSORS -> Outcome.LOSE
+                    Selection.UNKNOWN -> Outcome.UNKNOWN
+                    else -> {
+                        Outcome.DRAW
+                    }
+                }
+
+                Selection.ROCK -> when (round.first) {
+                    Selection.SCISSORS -> Outcome.WIN
+                    Selection.PAPER -> Outcome.LOSE
+                    Selection.UNKNOWN -> Outcome.UNKNOWN
+                    else -> {
+                        Outcome.DRAW
+                    }
+                }
+
+                Selection.SCISSORS -> when (round.first) {
+                    Selection.PAPER -> Outcome.WIN
+                    Selection.ROCK -> Outcome.LOSE
+                    Selection.UNKNOWN -> Outcome.UNKNOWN
+                    else -> {
+                        Outcome.DRAW
+                    }
+                }
+
+                else -> {
+                    Outcome.UNKNOWN
+                }
+            }
+
+        private fun getSelectionPoints(selection: Selection): Int =
+            when (selection) {
+                Selection.ROCK -> 1
+                Selection.PAPER -> 2
+                Selection.SCISSORS -> 3
+                Selection.UNKNOWN -> {
+                    println("error in parsing $selection")
+                    -1
+                }
+            }
+
+        private fun getOutcomePoints(outcome: Outcome): Int =
+            when (outcome) {
+                Outcome.WIN -> 6
+                Outcome.LOSE -> 0
+                Outcome.DRAW -> 3
+                Outcome.UNKNOWN -> {
+                    println("error in parsing $outcome")
+                    -1
+                }
+            }
+
+    }
+}
+
+enum class Outcome {
+    WIN, LOSE, DRAW, UNKNOWN;
+
+    companion object {
         fun toSelections(round: Pair<Selection, Outcome>): Pair<Selection, Selection> =
             Pair(round.first, toSelection(round))
 
@@ -65,8 +126,6 @@ enum class Outcome {
                 }
             }
 
-
-
         fun fromLetter(letter: Char): Outcome =
             when (letter) {
                 'X' -> LOSE
@@ -77,63 +136,6 @@ enum class Outcome {
                     UNKNOWN
                 }
             }
-
-        private fun getSelectionPoints(selection: Selection): Int =
-            when (selection) {
-                Selection.ROCK -> 1
-                Selection.PAPER -> 2
-                Selection.SCISSORS -> 3
-                Selection.UNKNOWN -> {
-                    println("error in parsing $selection")
-                    -1
-                }
-            }
-
-        private fun getOutcomePoints(outcome: Outcome): Int =
-            when (outcome) {
-                WIN -> 6
-                LOSE -> 0
-                DRAW -> 3
-                UNKNOWN -> {
-                    println("error in parsing $outcome")
-                    -1
-                }
-            }
-
-        private fun roundOutcome(round: Pair<Selection, Selection>): Outcome =
-            when (round.second) {
-                Selection.PAPER -> when (round.first) {
-                    Selection.ROCK -> WIN
-                    Selection.SCISSORS -> LOSE
-                    Selection.UNKNOWN -> UNKNOWN
-                    else -> {
-                        DRAW
-                    }
-                }
-
-                Selection.ROCK -> when (round.first) {
-                    Selection.SCISSORS -> WIN
-                    Selection.PAPER -> LOSE
-                    Selection.UNKNOWN -> UNKNOWN
-                    else -> {
-                        DRAW
-                    }
-                }
-
-                Selection.SCISSORS -> when (round.first) {
-                    Selection.PAPER -> WIN
-                    Selection.ROCK -> LOSE
-                    Selection.UNKNOWN -> UNKNOWN
-                    else -> {
-                        DRAW
-                    }
-                }
-
-                else -> {
-                    UNKNOWN
-                }
-            }
-
     }
 }
 
@@ -147,15 +149,15 @@ fun loadInputPart2(): List<Pair<Selection, Selection>> =
     File("day2input.txt")
         .readLines()
         .map { line -> Pair(fromLetter(line.toCharArray()[0]), Outcome.fromLetter(line.toCharArray()[2])) }
-        .map {round -> Outcome.toSelections(round)}
+        .map { round -> Outcome.toSelections(round) }
         .toList()
 
 fun part1() {
-    println(loadInputPart1().sumOf { round -> Outcome.toPoints(round) })
+    println(loadInputPart1().sumOf { round -> Round.toPoints(round) })
 }
 
 fun part2() {
-    println(loadInputPart2().sumOf { round -> Outcome.toPoints(round) })
+    println(loadInputPart2().sumOf { round -> Round.toPoints(round) })
 }
 
 fun main() {
