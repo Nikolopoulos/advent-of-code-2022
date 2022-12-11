@@ -69,14 +69,14 @@ fun findCommonElementInGroup(value: Triple<List<Int>, List<Int>, List<Int>>): In
     }
 }
 
-fun part1(): Int {
+fun day3Part1(): Int {
     return linesToNumbers().stream()
         .map { splitListInCompartments(it) }
         .map { findCommonElementInCompartments(it) }
         .toList().sum()
 }
 
-fun part2(): Int =
+fun day3Part2(): Int =
     splitInGroups(linesToNumbers()).stream()
         .map { findCommonElementInGroup(it) }
         .toList()
@@ -84,6 +84,6 @@ fun part2(): Int =
 
 
 fun main() {
-    println(part1())
-    println(part2())
+    println(day3Part1())
+    println(day3Part2())
 }

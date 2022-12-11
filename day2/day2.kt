@@ -152,15 +152,15 @@ fun loadInputPart2(): List<Pair<Selection, Selection>> =
         .map { round -> Outcome.toSelections(round) }
         .toList()
 
-fun part1() {
+fun day2Part1() {
     println(loadInputPart1().sumOf { round -> Round.toPoints(round) })
 }
 
-fun part2() {
+fun day2Part2() {
     println(loadInputPart2().sumOf { round -> Round.toPoints(round) })
 }
 
 fun main() {
-    part1()
-    part2()
+    day2Part1()
+    day2Part2()
 }

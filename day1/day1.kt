@@ -15,15 +15,15 @@ fun loadSums(): List<Int> =
         }
 
 
-fun part1() {
+fun day1Part1() {
     println(loadSums().sorted().reversed()[0])
 }
 
-fun part2() {
+fun day1Part2() {
     println(loadSums().sorted().reversed().subList(0,3).sum())
 }
 
 fun main() {
-    part1()
-    part2()
+    day1Part1()
+    day1Part2()
 }
